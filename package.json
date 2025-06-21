@@ -1,0 +1,20 @@
+{
+  "name": "phl2b5-mission03-assignment03-solution",
+  "version": "1.0.0",
+  "description": "PHL2B5-Mission03-Assignment03-Solution",
+  "license": "ISC",
+  "author": "Mohammad Zahid Kamal",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.0.3",
+    "typescript": "^5.8.3"
+  }
+}
