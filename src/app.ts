@@ -1,7 +1,16 @@
 import express, {Application, Request, Response} from "express";
+import bookRoutes from "./app/controllers/books.controller";
 
 
 const app: Application = express();
+
+
+// Middlewares
+app.use(express.json());
+
+
+// Routes forwarding
+app.use('/books', bookRoutes);
 
 
 app.get('/', (req: Request, res: Response) => {

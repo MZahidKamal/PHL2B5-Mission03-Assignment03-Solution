@@ -46,24 +46,32 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const app_1 = __importDefault(require("./app"));
-require("dotenv/config");
+const index_1 = __importDefault(require("./config/index"));
 const mongoose = __importStar(require("mongoose"));
-const PORT = 5000;
 let server;
 const bootstrap = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        // Connecting to MongoDB, using the Mongoose package. MongoDB URI is coming from the.env file.
-        yield mongoose.connect(`mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster0.ktxyk.mongodb.net/Library_Management_API_DB-PHNLB5-M3A3?retryWrites=true&w=majority&appName=Cluster0`);
-        console.log('Connected to MongoDB using Mongoose!');
-        // Running the server to see the output in the browser.
-        server = app_1.default.listen(PORT, () => {
-            console.log(`Library Management Server listening on port ${PORT}`);
+        // Connecting to MongoDB, using the Mongoose package.
+        const database = yield mongoose.connect(index_1.default.mongodb_uri);
+        if (database) {
+            console.log('✅ Connected to MongoDB successfully!');
+        }
+        // Starting the server to see the output in the browser.
+        server = app_1.default.listen(index_1.default.port, () => {
+            console.log(`✅ Library Management Server listening on port ${index_1.default.port}`);
         });
     }
     catch (error) {
-        console.log('Error in bootstrap!');
-        console.log(error);
-        process.exit(1);
+        console.error('❌ Error in bootstrap: ', error.message);
+        // Graceful shutdown.
+        if (server) {
+            console.log('⚠️ Server closed successfully!');
+            server.close(() => process.exit(1));
+        }
+        else {
+            console.log('⚠️ Server closed successfully!');
+            process.exit(1);
+        }
     }
 });
 bootstrap().then();
