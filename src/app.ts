@@ -7,10 +7,12 @@ const app: Application = express();
 
 // Middlewares
 app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+
 
 
 // Routes forwarding
-app.use('/books', bookRoutes);
+app.use('/api/books', bookRoutes);
 
 
 app.get('/', (req: Request, res: Response) => {

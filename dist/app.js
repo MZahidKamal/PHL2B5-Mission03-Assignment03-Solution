@@ -8,8 +8,9 @@ const books_controller_1 = __importDefault(require("./app/controllers/books.cont
 const app = (0, express_1.default)();
 // Middlewares
 app.use(express_1.default.json());
+app.use(express_1.default.urlencoded({ extended: true }));
 // Routes forwarding
-app.use('/books', books_controller_1.default);
+app.use('/api/books', books_controller_1.default);
 app.get('/', (req, res) => {
     res.send('Welcome to Library Management Server, created using ExpressJS, Mongoose and TypeScript!');
 });
