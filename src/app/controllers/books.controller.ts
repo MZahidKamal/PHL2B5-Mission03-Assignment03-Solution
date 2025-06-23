@@ -26,22 +26,35 @@ bookRoutes.post('/', async (req: Request, res: Response) => {
 
 bookRoutes.get("/", async (req: Request, res: Response) => {
     try {
-        const allBooks = await BookModel.find();
+        let {filter, sortBy, sort, limit} = req.query;
+
+        let query = BookModel.find();
+
+        if (filter) {
+            const formattedFilter = filter.toString().charAt(0).toUpperCase() + filter.toString().slice(1).toLowerCase();
+            query = query.where('genre').equals(formattedFilter);
+        }
+        if (sortBy && sort) {
+            query = query.sort({[sortBy as string]: sort === 'desc' ? -1 : 1} as any);
+        }
+        if (limit) {
+            query = query.limit(Number(limit));
+        }
+
+        const allBooks = await query;
         res.status(200).json({
             success: true,
             message: 'Getting all books successful!',
             data: allBooks
-        })
+        });
     } catch (error: any) {
         res.status(400).json({
             message: 'Getting all books failed!',
             success: false,
-            error: error.errors
-        })
+            error: error.errors || {message: error.message}
+        });
     }
-
-
-})
+});
 
 
 export default bookRoutes;

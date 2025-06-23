@@ -35,7 +35,19 @@ bookRoutes.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* (
 }));
 bookRoutes.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const allBooks = yield books_model_1.default.find();
+        let { filter, sortBy, sort, limit } = req.query;
+        let query = books_model_1.default.find();
+        if (filter) {
+            const formattedFilter = filter.toString().charAt(0).toUpperCase() + filter.toString().slice(1).toLowerCase();
+            query = query.where('genre').equals(formattedFilter);
+        }
+        if (sortBy && sort) {
+            query = query.sort({ [sortBy]: sort === 'desc' ? -1 : 1 });
+        }
+        if (limit) {
+            query = query.limit(Number(limit));
+        }
+        const allBooks = yield query;
         res.status(200).json({
             success: true,
             message: 'Getting all books successful!',
@@ -46,7 +58,7 @@ bookRoutes.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         res.status(400).json({
             message: 'Getting all books failed!',
             success: false,
-            error: error.errors
+            error: error.errors || { message: error.message }
         });
     }
 }));
