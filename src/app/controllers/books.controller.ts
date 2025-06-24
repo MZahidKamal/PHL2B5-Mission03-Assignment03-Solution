@@ -1,5 +1,6 @@
 import BookModel from "../models/books.model";
 import express, {Request, Response, Router} from "express";
+import {Types} from "mongoose";
 
 
 const bookRoutes: Router = express.Router();
@@ -70,6 +71,28 @@ bookRoutes.get("/:bookId", async (req: Request, res: Response) => {
     } catch (error: any) {
         res.status(400).json({
             message: 'Getting a book by id is failed!',
+            success: false,
+            error: error.errors || {message: error.message}
+        });
+    }
+});
+
+// UPDATE
+bookRoutes.put("/:bookId", async (req: Request, res: Response) => {
+    try {
+        const {bookId} = req.params as { bookId: string };
+        const modifications = req.body;
+
+        const updatedBook = await BookModel.findByIdAndUpdate(bookId, modifications, {new: true, runValidators: true});
+
+        res.status(200).json({
+            success: true,
+            message: 'Getting a book by id and update it is successful!',
+            data: updatedBook
+        });
+    } catch (error: any) {
+        res.status(400).json({
+            message: 'Getting a book by id and update it is failed!',
             success: false,
             error: error.errors || {message: error.message}
         });

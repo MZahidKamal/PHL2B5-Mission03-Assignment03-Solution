@@ -83,4 +83,24 @@ bookRoutes.get("/:bookId", (req, res) => __awaiter(void 0, void 0, void 0, funct
         });
     }
 }));
+// UPDATE
+bookRoutes.put("/:bookId", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { bookId } = req.params;
+        const modifications = req.body;
+        const updatedBook = yield books_model_1.default.findByIdAndUpdate(bookId, modifications, { new: true, runValidators: true });
+        res.status(200).json({
+            success: true,
+            message: 'Getting a book by id and update it is successful!',
+            data: updatedBook
+        });
+    }
+    catch (error) {
+        res.status(400).json({
+            message: 'Getting a book by id and update it is failed!',
+            success: false,
+            error: error.errors || { message: error.message }
+        });
+    }
+}));
 exports.default = bookRoutes;
