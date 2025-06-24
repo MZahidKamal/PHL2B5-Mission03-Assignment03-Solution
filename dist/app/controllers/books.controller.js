@@ -68,7 +68,7 @@ bookRoutes.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 bookRoutes.get("/:bookId", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { bookId } = req.params;
-        const aBook = yield books_model_1.default.findById(bookId).exec();
+        const aBook = yield books_model_1.default.findById(bookId);
         res.status(200).json({
             success: true,
             message: 'Getting a book by id is successful!',
@@ -93,6 +93,26 @@ bookRoutes.put("/:bookId", (req, res) => __awaiter(void 0, void 0, void 0, funct
             success: true,
             message: 'Getting a book by id and update it is successful!',
             data: updatedBook
+        });
+    }
+    catch (error) {
+        res.status(400).json({
+            message: 'Getting a book by id and update it is failed!',
+            success: false,
+            error: error.errors || { message: error.message }
+        });
+    }
+}));
+// DELETE
+bookRoutes.delete("/:bookId", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { bookId } = req.params;
+        yield books_model_1.default.findByIdAndDelete(bookId);
+        const deletedBook = yield books_model_1.default.findById(bookId);
+        res.status(200).json({
+            success: true,
+            message: 'Getting a book by id and update it is successful!',
+            data: deletedBook
         });
     }
     catch (error) {
