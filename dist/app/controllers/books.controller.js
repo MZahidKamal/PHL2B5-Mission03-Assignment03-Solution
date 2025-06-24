@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const books_model_1 = __importDefault(require("../models/books.model"));
 const express_1 = __importDefault(require("express"));
 const bookRoutes = express_1.default.Router();
+// CREATE
 bookRoutes.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const newBookObj = req.body;
@@ -33,6 +34,7 @@ bookRoutes.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* (
         });
     }
 }));
+// READ
 bookRoutes.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let { filter, sortBy, sort, limit } = req.query;
@@ -50,13 +52,32 @@ bookRoutes.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const allBooks = yield query;
         res.status(200).json({
             success: true,
-            message: 'Getting all books successful!',
+            message: 'Getting all books si successful!',
             data: allBooks
         });
     }
     catch (error) {
         res.status(400).json({
             message: 'Getting all books failed!',
+            success: false,
+            error: error.errors || { message: error.message }
+        });
+    }
+}));
+// READ
+bookRoutes.get("/:bookId", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { bookId } = req.params;
+        const aBook = yield books_model_1.default.findById(bookId).exec();
+        res.status(200).json({
+            success: true,
+            message: 'Getting a book by id is successful!',
+            data: aBook
+        });
+    }
+    catch (error) {
+        res.status(400).json({
+            message: 'Getting a book by id is failed!',
             success: false,
             error: error.errors || { message: error.message }
         });

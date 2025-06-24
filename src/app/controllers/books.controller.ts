@@ -1,10 +1,10 @@
 import BookModel from "../models/books.model";
-import express, {Request, Response} from "express";
+import express, {Request, Response, Router} from "express";
 
 
-const bookRoutes = express.Router();
+const bookRoutes: Router = express.Router();
 
-
+// CREATE
 bookRoutes.post('/', async (req: Request, res: Response) => {
     try {
         const newBookObj = req.body;
@@ -23,7 +23,7 @@ bookRoutes.post('/', async (req: Request, res: Response) => {
     }
 });
 
-
+// READ
 bookRoutes.get("/", async (req: Request, res: Response) => {
     try {
         let {filter, sortBy, sort, limit} = req.query;
@@ -44,12 +44,32 @@ bookRoutes.get("/", async (req: Request, res: Response) => {
         const allBooks = await query;
         res.status(200).json({
             success: true,
-            message: 'Getting all books successful!',
+            message: 'Getting all books si successful!',
             data: allBooks
         });
     } catch (error: any) {
         res.status(400).json({
             message: 'Getting all books failed!',
+            success: false,
+            error: error.errors || {message: error.message}
+        });
+    }
+});
+
+// READ
+bookRoutes.get("/:bookId", async (req: Request, res: Response) => {
+    try {
+        const {bookId} = req.params as { bookId: string };
+        const aBook = await BookModel.findById(bookId).exec();
+
+        res.status(200).json({
+            success: true,
+            message: 'Getting a book by id is successful!',
+            data: aBook
+        });
+    } catch (error: any) {
+        res.status(400).json({
+            message: 'Getting a book by id is failed!',
             success: false,
             error: error.errors || {message: error.message}
         });
