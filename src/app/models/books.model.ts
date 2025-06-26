@@ -1,5 +1,8 @@
 import {Model, model, Schema} from "mongoose";
-import BookInterface from "../interfaces/books.interface";
+import {BookInterface, BookInstanceMethodInterface} from "../interfaces/books.interface";
+
+
+
 
 
 const bookSchema = new Schema<BookInterface>({
@@ -60,7 +63,34 @@ const bookSchema = new Schema<BookInterface>({
 );
 
 
-const BookModel: Model<BookInterface> = model('BookModel', bookSchema);
+
+
+
+// Instance method to remove all dashes from the user-inserted ISBN.
+bookSchema.method('correctIsbnPattern', async function (originalIsbn: string): Promise<string> {
+    console.log(originalIsbn);
+    this.isbn = originalIsbn.replace(/-/g, '');
+    console.log(this.isbn);
+    return this.isbn;
+})
+
+
+
+
+// Instance method to check the availability of a book.
+bookSchema.method('checkAndUpdateAvailability', async function (): Promise<void> {
+    this.available = this.copies > 0;
+    await this.save();
+})
+
+
+
+
+
+const BookModel = model<BookInterface, Model<BookInterface, {}, BookInstanceMethodInterface>>('BookModel', bookSchema);
+
+
+
 
 
 export default BookModel;

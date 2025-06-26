@@ -2,13 +2,24 @@ import BookModel from "../models/books.model";
 import express, {Request, Response, Router} from "express";
 
 
+
+
+
 const bookRoutes: Router = express.Router();
+
+
+
+
 
 // CREATE
 bookRoutes.post('/', async (req: Request, res: Response) => {
     try {
         const newBookObj = req.body;
+
         const newBook = await BookModel.create(newBookObj);
+        await newBook.correctIsbnPattern(newBookObj.isbn);
+        await newBook.checkAndUpdateAvailability();
+
         res.status(201).json({
             success: true,
             message: 'New book created successfully!',
@@ -23,7 +34,11 @@ bookRoutes.post('/', async (req: Request, res: Response) => {
     }
 });
 
-// READ
+
+
+
+
+// READ (with a query)
 bookRoutes.get("/", async (req: Request, res: Response) => {
     try {
         let {filter, sortBy, sort, limit} = req.query;
@@ -56,11 +71,18 @@ bookRoutes.get("/", async (req: Request, res: Response) => {
     }
 });
 
-// READ
+
+
+
+
+// READ (by ID)
 bookRoutes.get("/:bookId", async (req: Request, res: Response) => {
     try {
         const {bookId} = req.params as { bookId: string };
         const aBook = await BookModel.findById(bookId);
+        if (aBook) {
+            await aBook.checkAndUpdateAvailability();
+        }
 
         res.status(200).json({
             success: true,
@@ -76,6 +98,10 @@ bookRoutes.get("/:bookId", async (req: Request, res: Response) => {
     }
 });
 
+
+
+
+
 // UPDATE
 bookRoutes.put("/:bookId", async (req: Request, res: Response) => {
     try {
@@ -83,6 +109,9 @@ bookRoutes.put("/:bookId", async (req: Request, res: Response) => {
         const modifications = req.body;
 
         const updatedBook = await BookModel.findByIdAndUpdate(bookId, modifications, {new: true, runValidators: true});
+        if (updatedBook){
+            await updatedBook.checkAndUpdateAvailability();
+        }
 
         res.status(200).json({
             success: true,
@@ -97,6 +126,9 @@ bookRoutes.put("/:bookId", async (req: Request, res: Response) => {
         });
     }
 });
+
+
+
 
 
 // DELETE
@@ -120,6 +152,9 @@ bookRoutes.delete("/:bookId", async (req: Request, res: Response) => {
         });
     }
 });
+
+
+
 
 
 export default bookRoutes;

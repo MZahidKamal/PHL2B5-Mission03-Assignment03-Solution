@@ -20,6 +20,8 @@ bookRoutes.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* (
     try {
         const newBookObj = req.body;
         const newBook = yield books_model_1.default.create(newBookObj);
+        yield newBook.correctIsbnPattern(newBookObj.isbn);
+        yield newBook.checkAndUpdateAvailability();
         res.status(201).json({
             success: true,
             message: 'New book created successfully!',
@@ -34,7 +36,7 @@ bookRoutes.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* (
         });
     }
 }));
-// READ
+// READ (with a query)
 bookRoutes.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let { filter, sortBy, sort, limit } = req.query;
@@ -64,11 +66,14 @@ bookRoutes.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         });
     }
 }));
-// READ
+// READ (by ID)
 bookRoutes.get("/:bookId", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { bookId } = req.params;
         const aBook = yield books_model_1.default.findById(bookId);
+        if (aBook) {
+            yield aBook.checkAndUpdateAvailability();
+        }
         res.status(200).json({
             success: true,
             message: 'Getting a book by id is successful!',
@@ -89,6 +94,9 @@ bookRoutes.put("/:bookId", (req, res) => __awaiter(void 0, void 0, void 0, funct
         const { bookId } = req.params;
         const modifications = req.body;
         const updatedBook = yield books_model_1.default.findByIdAndUpdate(bookId, modifications, { new: true, runValidators: true });
+        if (updatedBook) {
+            yield updatedBook.checkAndUpdateAvailability();
+        }
         res.status(200).json({
             success: true,
             message: 'Getting a book by id and update it is successful!',

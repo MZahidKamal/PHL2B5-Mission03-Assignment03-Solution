@@ -10,4 +10,19 @@ interface BookInterface {
 }
 
 
-export default BookInterface;
+
+
+
+interface BookInstanceMethodInterface {
+    correctIsbnPattern: (originalIsbn: string) => Promise<string>
+    checkAndUpdateAvailability: () => Promise<void>
+}
+
+
+
+
+
+export {
+    BookInterface,
+    BookInstanceMethodInterface
+};
