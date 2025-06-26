@@ -1,4 +1,4 @@
-import {Model, model, Schema, ValidatorProps} from "mongoose";
+import {Model, model, Schema} from "mongoose";
 import BookInterface from "../interfaces/books.interface";
 
 
