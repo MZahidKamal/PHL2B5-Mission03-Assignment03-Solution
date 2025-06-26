@@ -25,7 +25,49 @@ borrowRoutes.post('/', async (req: Request, res: Response) => {
 
 // READ
 borrowRoutes.get('/', async (req: Request, res: Response) => {
+    try {
+        const desiredPipeline = [
+            {
+                $lookup: {
+                    from: 'bookmodels', // The 'bookmodels' is created by MongoDB from the BookModel collection.
+                    localField: 'book',
+                    foreignField: '_id',
+                    as: 'bookDocument'
+                }
+            },
+            {
+                $unwind: '$bookDocument'
+            },
+            {
+                $group: {
+                    _id: '$book',
+                    totalQuantity: {$sum: '$quantity'},
+                    book: {$first: {title: '$bookDocument.title', isbn: '$bookDocument.isbn'}}
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    book: 1,
+                    totalQuantity: 1
+                }
+            }
+        ];
 
+        const borrowedSummary = await BorrowModel.aggregate(desiredPipeline);
+
+        res.status(200).json({
+            success: true,
+            message: 'Borrowed books summary retrieved successfully',
+            data: borrowedSummary
+        });
+    } catch (error: any) {
+        res.status(400).json({
+            message: 'Failed to retrieve borrowed books summary!',
+            success: false,
+            error: {message: error.message}
+        });
+    }
 });
 
 
