@@ -38,13 +38,14 @@ This backend API provides a simple and effective way to manage books and borrowi
 - 📖 **Book Management**: Add, retrieve, update, and delete books with key attributes like title, author, genre, ISBN, and available copies.
 - 📚 **Borrow Tracking**: Log borrow records while validating availability, tracking due dates, and handling quantity limits.
 - 🔍 **Advanced Queries**: Filter, sort, and limit results with intelligent genre capitalization corrections.
-- 🔐 **Data Validation**: Ensures reliable structure with strict Mongoose schema validations.
-- ⚙️ **Pre/Post Hooks**: Automatically adjust book availability when books are borrowed or returned.
+- 🔐 **Data Validation**: Ensures a reliable structure with strict Mongoose schema validations.
+- ⚙️ **Pre- / Post-Hooks**: Automatically adjust book availability when books are borrowed or returned.
 
 ---
 
 ## 📂 Project Structure
 
+```text
 phl2b5-mission03-assignment03-solution/
 ├── src/
 │   ├── app.ts               # Express app configuration
@@ -58,6 +59,7 @@ phl2b5-mission03-assignment03-solution/
 ├── tsconfig.json            # TypeScript configuration
 ├── vercel.json              # Deployment configuration
 └── README.md                # Project documentation
+```
 
 
 
@@ -71,14 +73,16 @@ All routes return the following response format:
 {
   "success": true,
   "message": "Your message here",
-  "data": { ... }
+  "data": {
+    "field": "value"
+  }
 }
-````
+```
 
 ### 📘 Book Routes
 
 | Method | Endpoint         | Description                        |
-| ------ | ---------------- | ---------------------------------- |
+|--------|------------------|------------------------------------|
 | POST   | `/books`         | Create a new book                  |
 | GET    | `/books`         | Get all books (with query options) |
 | GET    | `/books/:bookId` | Get a specific book by ID          |
@@ -89,12 +93,12 @@ All routes return the following response format:
 
 ```json
 {
-  "title": "Clean Code",
-  "author": "Robert C. Martin",
-  "genre": "Programming",
-  "isbn": "9780132350884",
-  "description": "A Handbook of Agile Software Craftsmanship",
-  "copies": 10
+  "title": "The Great Gatsby",
+  "author": "F. Scott Fitzgerald",
+  "genre": "Fiction",
+  "isbn": "978074-273565",
+  "description": "A novel about the Jazz Age, following the life of Jay Gatsby and his love for Daisy Buchanan.",
+  "copies": 5
 }
 ```
 
@@ -103,7 +107,7 @@ All routes return the following response format:
 ### 📗 Borrow Routes
 
 | Method | Endpoint                    | Description                            |
-| ------ | --------------------------- | -------------------------------------- |
+|--------|-----------------------------|----------------------------------------|
 | POST   | `/borrows`                  | Create a new borrow entry              |
 | GET    | `/borrows/borrowed-summary` | Get total borrowed quantities per book |
 
@@ -111,9 +115,9 @@ All routes return the following response format:
 
 ```json
 {
-  "book": "BOOK_ID_HERE",
-  "quantity": 2,
-  "dueDate": "2025-07-31"
+  "book": "685de2cf89fae0838a527efa",
+  "quantity": 1,
+  "dueDate": "2025-07-18T00:00:00.000Z"
 }
 ```
 
