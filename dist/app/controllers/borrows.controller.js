@@ -30,7 +30,7 @@ borrowRoutes.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function*
         res.status(400).json({
             message: 'New borrow entry creation failed!',
             success: false,
-            error: error.errors
+            error: error.errors || error.message
         });
     }
 }));

@@ -67,9 +67,9 @@ const bookSchema = new mongoose_1.Schema({
 // Instance method to remove all dashes from the user-inserted ISBN.
 bookSchema.method('correctIsbnPattern', function (originalIsbn) {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log(originalIsbn);
+        // console.log(originalIsbn);
         this.isbn = originalIsbn.replace(/-/g, '');
-        console.log(this.isbn);
+        // console.log(this.isbn);
         return this.isbn;
     });
 });

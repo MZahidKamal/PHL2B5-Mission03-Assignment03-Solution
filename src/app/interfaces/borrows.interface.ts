@@ -2,6 +2,9 @@
 import {Types} from "mongoose";
 
 
+
+
+
 interface BorrowInterface {
     book: Types.ObjectId,
     quantity: number,
@@ -9,4 +12,16 @@ interface BorrowInterface {
 }
 
 
-export default BorrowInterface;
+
+
+interface BorrowInstanceMethodInterface {
+    updateAvailability: () => Promise<void>
+}
+
+
+
+
+export {
+    BorrowInterface,
+    BorrowInstanceMethodInterface
+};

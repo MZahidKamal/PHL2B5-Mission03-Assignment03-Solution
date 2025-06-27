@@ -59,7 +59,7 @@ bookRoutes.get("/", async (req: Request, res: Response) => {
         const allBooks = await query;
         res.status(200).json({
             success: true,
-            message: 'Getting all books si successful!',
+            message: 'Getting all books is successful!',
             data: allBooks
         });
     } catch (error: any) {

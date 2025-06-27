@@ -68,9 +68,9 @@ const bookSchema = new Schema<BookInterface>({
 
 // Instance method to remove all dashes from the user-inserted ISBN.
 bookSchema.method('correctIsbnPattern', async function (originalIsbn: string): Promise<string> {
-    console.log(originalIsbn);
+    // console.log(originalIsbn);
     this.isbn = originalIsbn.replace(/-/g, '');
-    console.log(this.isbn);
+    // console.log(this.isbn);
     return this.isbn;
 })
 
