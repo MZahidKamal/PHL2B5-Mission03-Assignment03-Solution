@@ -81,13 +81,13 @@ All routes return the following response format:
 
 ### 📘 Book Routes
 
-| Method | Endpoint         | Description                        |
-|--------|------------------|------------------------------------|
-| POST   | `/books`         | Create a new book                  |
-| GET    | `/books`         | Get all books (with query options) |
-| GET    | `/books/:bookId` | Get a specific book by ID          |
-| PUT    | `/books/:bookId` | Update an existing book            |
-| DELETE | `/books/:bookId` | Delete a book by ID                |
+| Method | Endpoint             | Description                        |
+|--------|----------------------|------------------------------------|
+| POST   | `/api/books`         | Create a new book                  |
+| GET    | `/api/books`         | Get all books (with query options) |
+| GET    | `/api/books/:bookId` | Get a specific book by ID          |
+| PUT    | `/api/books/:bookId` | Update an existing book            |
+| DELETE | `/api/books/:bookId` | Delete a book by ID                |
 
 **Book Payload Example**:
 
@@ -106,10 +106,10 @@ All routes return the following response format:
 
 ### 📗 Borrow Routes
 
-| Method | Endpoint                    | Description                            |
-|--------|-----------------------------|----------------------------------------|
-| POST   | `/borrows`                  | Create a new borrow entry              |
-| GET    | `/borrows/borrowed-summary` | Get total borrowed quantities per book |
+| Method | Endpoint      | Description                            |
+|--------|---------------|----------------------------------------|
+| POST   | `/api/borrow` | Create a new borrow entry              |
+| GET    | `/api/borrow` | Get total borrowed quantities per book |
 
 **Borrow Payload Example**:
 
