@@ -24,8 +24,8 @@ const bookSchema = new Schema<BookInterface>({
         genre: {
             type: String,
             enum: {
-                values: ['Fiction', 'Non-Fiction', 'Science', 'History', 'Biography', 'Fantasy'],
-                message: 'genre must be one of the following: Fiction, Non-Fiction, Science, History, Biography, Fantasy'
+                values: ['FICTION', 'NON-FICTION', 'SCIENCE', 'HISTORY', 'BIOGRAPHY', 'FANTASY'],
+                message: 'genre must be one of the following: Fiction, Non-Fiction, Science, History, Biography, Fantasy with all capital letter!'
             },
             required: [true, 'Genre is required!'],
         },
@@ -48,7 +48,6 @@ const bookSchema = new Schema<BookInterface>({
             type: Number,
             required: [true, 'Copies is required!'],
             min: [0, 'Copies must not be negative number!'],
-            max: [25, 'Copies must not be greater than 25!'],
             default: 1,
         },
         available: {
